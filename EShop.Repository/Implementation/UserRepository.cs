@@ -31,7 +31,7 @@ namespace EShop.Repository.Implementation
             return entities
                 .Include(z => z.UserCart)
                 .Include(z => z.UserCart.ProductInShoppingCarts)
-                .Include("UserCart.ProductInShoppingCarts.Product")
+                .Include("UserCart.ProductInShoppingCarts.Ticket")
                 .First(s => s.Id == strGuid);
         }
         public void Insert(EShopApplicationUser entity)

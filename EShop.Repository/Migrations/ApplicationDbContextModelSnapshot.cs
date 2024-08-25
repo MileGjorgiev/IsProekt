@@ -22,6 +22,44 @@ namespace EShop.Repository.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("EShop.Domain.Domain.MatchSchedules", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("SportEventsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("SportsEventsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Team1Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Team2Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TeamId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TeamId2")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SportsEventsId");
+
+                    b.HasIndex("Team1Id");
+
+                    b.HasIndex("Team2Id");
+
+                    b.ToTable("MatchSchedules");
+                });
+
             modelBuilder.Entity("EShop.Domain.Domain.Order", b =>
                 {
                     b.Property<Guid>("Id")
@@ -35,89 +73,55 @@ namespace EShop.Repository.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("EShop.Domain.Domain.Product", b =>
+            modelBuilder.Entity("EShop.Domain.Domain.Player", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<string>("ProductDescription")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProductImage")
+                    b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Rating")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.ToTable("Products", (string)null);
-                });
-
-            modelBuilder.Entity("EShop.Domain.Domain.ProductInOrder", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid?>("TeamId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Quantity")
+                    b.Property<int>("years")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("TeamId");
 
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductInOrders", (string)null);
+                    b.ToTable("Player");
                 });
 
-            modelBuilder.Entity("EShop.Domain.Domain.ProductInShoppingCart", b =>
+            modelBuilder.Entity("EShop.Domain.Domain.PlayerOnTeam", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid>("PlayerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("ShoppingCartId")
+                    b.Property<Guid>("TeamId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("PlayerId");
 
-                    b.HasIndex("ShoppingCartId");
+                    b.HasIndex("TeamId");
 
-                    b.ToTable("ProductInShoppingCarts", (string)null);
+                    b.ToTable("PlayerOnTeam");
                 });
 
             modelBuilder.Entity("EShop.Domain.Domain.ShoppingCart", b =>
@@ -135,7 +139,113 @@ namespace EShop.Repository.Migrations
                         .IsUnique()
                         .HasFilter("[OwnerId] IS NOT NULL");
 
-                    b.ToTable("ShoppingCarts", (string)null);
+                    b.ToTable("ShoppingCarts");
+                });
+
+            modelBuilder.Entity("EShop.Domain.Domain.SportsEvents", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SportsEvents");
+                });
+
+            modelBuilder.Entity("EShop.Domain.Domain.Team", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Team");
+                });
+
+            modelBuilder.Entity("EShop.Domain.Domain.Ticket", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("SportEventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("SportEventId");
+
+                    b.ToTable("Tickets");
+                });
+
+            modelBuilder.Entity("EShop.Domain.Domain.TicketInOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TicketId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("TicketInOrders");
+                });
+
+            modelBuilder.Entity("EShop.Domain.Domain.TicketInShoppingCart", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ShoppingCartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TicketId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShoppingCartId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("TicketInShoppingCarts");
                 });
 
             modelBuilder.Entity("EShop.Domain.Identity.EShopApplicationUser", b =>
@@ -349,6 +459,27 @@ namespace EShop.Repository.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("EShop.Domain.Domain.MatchSchedules", b =>
+                {
+                    b.HasOne("EShop.Domain.Domain.SportsEvents", "SportsEvents")
+                        .WithMany("MatchSchedules")
+                        .HasForeignKey("SportsEventsId");
+
+                    b.HasOne("EShop.Domain.Domain.Team", "Team1")
+                        .WithMany()
+                        .HasForeignKey("Team1Id");
+
+                    b.HasOne("EShop.Domain.Domain.Team", "Team2")
+                        .WithMany()
+                        .HasForeignKey("Team2Id");
+
+                    b.Navigation("SportsEvents");
+
+                    b.Navigation("Team1");
+
+                    b.Navigation("Team2");
+                });
+
             modelBuilder.Entity("EShop.Domain.Domain.Order", b =>
                 {
                     b.HasOne("EShop.Domain.Identity.EShopApplicationUser", "Owner")
@@ -358,51 +489,32 @@ namespace EShop.Repository.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("EShop.Domain.Domain.Product", b =>
+            modelBuilder.Entity("EShop.Domain.Domain.Player", b =>
                 {
-                    b.HasOne("EShop.Domain.Identity.EShopApplicationUser", "CreatedBy")
-                        .WithMany("MyProducts")
-                        .HasForeignKey("CreatedById");
+                    b.HasOne("EShop.Domain.Domain.Team", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId");
 
-                    b.Navigation("CreatedBy");
+                    b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("EShop.Domain.Domain.ProductInOrder", b =>
+            modelBuilder.Entity("EShop.Domain.Domain.PlayerOnTeam", b =>
                 {
-                    b.HasOne("EShop.Domain.Domain.Order", "Order")
-                        .WithMany("ProductInOrders")
-                        .HasForeignKey("OrderId")
+                    b.HasOne("EShop.Domain.Domain.Player", "Player")
+                        .WithMany("OnTeams")
+                        .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EShop.Domain.Domain.Product", "OrderedProduct")
-                        .WithMany("ProductInOrders")
-                        .HasForeignKey("ProductId")
+                    b.HasOne("EShop.Domain.Domain.Team", "Team")
+                        .WithMany("PlayerOnTeams")
+                        .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Order");
+                    b.Navigation("Player");
 
-                    b.Navigation("OrderedProduct");
-                });
-
-            modelBuilder.Entity("EShop.Domain.Domain.ProductInShoppingCart", b =>
-                {
-                    b.HasOne("EShop.Domain.Domain.Product", "Product")
-                        .WithMany("ProductsInShoppingCart")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EShop.Domain.Domain.ShoppingCart", "ShoppingCart")
-                        .WithMany("ProductInShoppingCarts")
-                        .HasForeignKey("ShoppingCartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("ShoppingCart");
+                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("EShop.Domain.Domain.ShoppingCart", b =>
@@ -412,6 +524,61 @@ namespace EShop.Repository.Migrations
                         .HasForeignKey("EShop.Domain.Domain.ShoppingCart", "OwnerId");
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("EShop.Domain.Domain.Ticket", b =>
+                {
+                    b.HasOne("EShop.Domain.Identity.EShopApplicationUser", "CreatedBy")
+                        .WithMany("MyProducts")
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("EShop.Domain.Domain.SportsEvents", "SportEvent")
+                        .WithMany("Tickets")
+                        .HasForeignKey("SportEventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("SportEvent");
+                });
+
+            modelBuilder.Entity("EShop.Domain.Domain.TicketInOrder", b =>
+                {
+                    b.HasOne("EShop.Domain.Domain.Order", "Order")
+                        .WithMany("ProductInOrders")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EShop.Domain.Domain.Ticket", "OrderedProduct")
+                        .WithMany("ProductInOrders")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("OrderedProduct");
+                });
+
+            modelBuilder.Entity("EShop.Domain.Domain.TicketInShoppingCart", b =>
+                {
+                    b.HasOne("EShop.Domain.Domain.ShoppingCart", "ShoppingCart")
+                        .WithMany("ProductInShoppingCarts")
+                        .HasForeignKey("ShoppingCartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EShop.Domain.Domain.Ticket", "Ticket")
+                        .WithMany("ProductsInShoppingCart")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ShoppingCart");
+
+                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -470,16 +637,33 @@ namespace EShop.Repository.Migrations
                     b.Navigation("ProductInOrders");
                 });
 
-            modelBuilder.Entity("EShop.Domain.Domain.Product", b =>
+            modelBuilder.Entity("EShop.Domain.Domain.Player", b =>
                 {
-                    b.Navigation("ProductInOrders");
-
-                    b.Navigation("ProductsInShoppingCart");
+                    b.Navigation("OnTeams");
                 });
 
             modelBuilder.Entity("EShop.Domain.Domain.ShoppingCart", b =>
                 {
                     b.Navigation("ProductInShoppingCarts");
+                });
+
+            modelBuilder.Entity("EShop.Domain.Domain.SportsEvents", b =>
+                {
+                    b.Navigation("MatchSchedules");
+
+                    b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("EShop.Domain.Domain.Team", b =>
+                {
+                    b.Navigation("PlayerOnTeams");
+                });
+
+            modelBuilder.Entity("EShop.Domain.Domain.Ticket", b =>
+                {
+                    b.Navigation("ProductInOrders");
+
+                    b.Navigation("ProductsInShoppingCart");
                 });
 
             modelBuilder.Entity("EShop.Domain.Identity.EShopApplicationUser", b =>

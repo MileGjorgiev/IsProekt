@@ -7,7 +7,6 @@ namespace EShop.Domain.Domain
     {
         public string? OwnerId { get; set; }
         public EShopApplicationUser? Owner { get; set; }
-
-        public ICollection<ProductInOrder>? ProductInOrders { get; set; }
+        public ICollection<TicketInOrder>? ProductInOrders { get; set; }
     }
 }

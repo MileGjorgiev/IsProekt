@@ -14,6 +14,6 @@ namespace EShop.Domain.Identity
         public string? LastName { get; set; }
         public string? Address { get; set; }
         public ShoppingCart? UserCart { get; set; }
-        public virtual ICollection<Product>? MyProducts { get; set; }
+        public virtual ICollection<Ticket>? MyProducts { get; set; }
     }
 }
